@@ -117,7 +117,7 @@ export default function NewInvitationLayout({
     dearName,
 }: NewInvitationLayoutProps) {
     const [guestName, setGuestName] = useState(
-        dearName || "NGƯỜI THƯƠNG"
+        dearName || "ANH/CHỊ?BẠN"
     );
 
     useEffect(() => {
