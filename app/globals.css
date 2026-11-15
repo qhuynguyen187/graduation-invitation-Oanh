@@ -1,0 +1,3253 @@
+@import "tailwindcss";
+
+/* ============================================================
+   ROOT
+============================================================ */
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --font-bubble: var(--font-bubble-cute);
+  --font-handwriting: var(--font-patrick-hand);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* ============================================================
+   BODY
+============================================================ */
+
+html,
+body,
+#__next {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.app-full-height {
+  min-height: 100dvh;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   OLD BACKGROUND SUPPORT
+============================================================ */
+
+.patterned-bg {
+  --tile-w: 140px;
+  --tile-h: 220px;
+  --line: 6px;
+  --overlay-alpha: 0.28;
+
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      white 0 var(--line),
+      transparent var(--line) var(--tile-w)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      white 0 var(--line),
+      transparent var(--line) var(--tile-h)
+    ),
+    linear-gradient(
+      rgba(0, 0, 0, var(--overlay-alpha)),
+      rgba(0, 0, 0, var(--overlay-alpha))
+    ),
+    var(--bg-image, none);
+
+  background-size:
+    auto,
+    auto,
+    var(--tile-w) var(--tile-h),
+    var(--tile-w) var(--tile-h);
+
+  background-repeat:
+    repeat,
+    repeat,
+    repeat,
+    repeat;
+
+  background-position:
+    0 0,
+    0 0,
+    center center,
+    center center;
+}
+
+@media (max-width: 640px) {
+  .patterned-bg {
+    --tile-w: 100px;
+    --tile-h: 160px;
+    --line: 4px;
+  }
+}
+
+/* ============================================================
+   PHOTO GRID SUPPORT
+============================================================ */
+
+.photo-grid-wrapper {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  pointer-events: none;
+}
+
+.photo-grid {
+  --line: 8px;
+  --grid-padding: 16px;
+  --overlay-alpha: 0.22;
+  --tile-image: var(--bg-image, none);
+
+  width: 100%;
+  max-width: 700px;
+
+  background: white;
+
+  display: grid;
+  gap: var(--line);
+
+  padding: var(--grid-padding);
+
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.photo-tile {
+  position: relative;
+
+  background-image: var(--tile-image);
+  background-size: cover;
+  background-position: center;
+
+  aspect-ratio: 3 / 4;
+
+  overflow: hidden;
+}
+
+.photo-tile::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0, 0, 0, var(--overlay-alpha));
+}
+
+@media (max-width: 640px) {
+  .photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: calc(100% - 32px);
+  }
+
+  .photo-grid .photo-tile:nth-child(n + 5) {
+    display: none;
+  }
+
+  .photo-tile {
+    aspect-ratio: 9 / 16;
+  }
+}
+
+.content-above-grid {
+  position: relative;
+  z-index: 10;
+}
+
+/* ============================================================
+   TYPEWRITER / ANIMATION SUPPORT
+============================================================ */
+
+.paper-invite-typewriter {
+  animation:
+    paper-invite-type 4.5s steps(45, end) infinite,
+    paper-invite-caret 0.75s step-end infinite;
+
+  border-right: 2px solid rgba(190, 18, 60, 0.85);
+
+  font-family:
+    var(--font-bubble-cute),
+    var(--font-cormorant),
+    ui-rounded,
+    system-ui,
+    sans-serif;
+
+  font-style: italic;
+  letter-spacing: 0.01em;
+
+  overflow: hidden;
+
+  text-shadow:
+    0 2px 0 rgba(236, 72, 153, 0.45),
+    0 4px 10px rgba(0, 0, 0, 0.22);
+}
+
+.paper-invite-note {
+  font-family:
+    var(--font-patrick-hand),
+    var(--font-cormorant),
+    var(--font-inter),
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+
+  font-style: normal;
+  letter-spacing: 0.015em;
+
+  color: #1f1f1f;
+
+  text-shadow: none;
+
+  line-height: 1.35;
+}
+
+@keyframes paper-invite-type {
+  0%,
+  12% {
+    max-width: 0;
+  }
+
+  72%,
+  100% {
+    max-width: 100%;
+  }
+}
+
+@keyframes paper-invite-caret {
+  0%,
+  100% {
+    border-color: rgba(190, 18, 60, 0.85);
+  }
+
+  50% {
+    border-color: transparent;
+  }
+}
+
+@keyframes banner-text-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-2px) scale(1.01);
+  }
+}
+
+.banner-text-float {
+  animation: banner-text-float 3.2s ease-in-out infinite;
+  will-change: transform;
+}
+
+.handwritten-dear {
+  font-family:
+    var(--font-great-vibes),
+    var(--font-cormorant),
+    var(--font-bubble-cute),
+    ui-serif,
+    serif;
+
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+
+  color: #765c3e;
+
+  text-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.12);
+
+  font-size: 22px;
+}
+
+@media (min-width: 640px) {
+  .handwritten-dear {
+    font-size: 28px;
+  }
+}
+
+.handwritten-write {
+  display: inline-block;
+
+  white-space: nowrap;
+  overflow: hidden;
+
+  padding: 0.16em 0.04em;
+
+  clip-path: inset(-0.28em 100% -0.28em 0);
+
+  animation: handwriting-reveal 1.65s ease-out both;
+
+  will-change: clip-path;
+}
+
+@keyframes handwriting-reveal {
+  to {
+    clip-path: inset(-0.28em 0 -0.28em 0);
+  }
+}
+
+/* ============================================================
+   MAP ANIMATION
+============================================================ */
+
+@keyframes map-wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+
+  10%,
+  30%,
+  50% {
+    transform: rotate(12deg);
+  }
+
+  20%,
+  40%,
+  60% {
+    transform: rotate(-12deg);
+  }
+
+  70% {
+    transform: rotate(0);
+  }
+}
+
+.animate-map-wiggle {
+  animation: map-wiggle 2s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+/* ============================================================
+   PREMIUM GRADUATION INVITATION
+   NGUYỄN QUANG HUY — 2026
+============================================================ */
+
+.premium-invitation-page {
+  position: relative;
+
+  width: 100%;
+
+  min-height: 100dvh;
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+  overflow: hidden;
+
+  /* NỀN NGOÀI TRONG SUỐT */
+  background: transparent;
+}
+
+
+/* ============================================================
+   ẢNH NỀN NGOÀI
+============================================================ */
+
+.premium-invitation-page::before {
+  content: "";
+
+  position: fixed;
+
+  inset: -40px;
+
+  background-image: url("/huy.jpg");
+
+  background-size: cover;
+
+  background-position: center center;
+
+  background-repeat: no-repeat;
+
+  filter:
+    blur(10px)
+    saturate(0.90)
+    brightness(1.02);
+
+  transform: scale(1.04);
+
+  /* Độ rõ của ảnh nền */
+  opacity: 0.62;
+
+  z-index: -1;
+
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   OUTSIDE BACKGROUND
+============================================================ */
+
+.premium-bg {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   ẢNH HUY BÊN NGOÀI
+============================================================ */
+
+.premium-bg-photo {
+  position: absolute;
+
+  inset: -70px;
+
+  background-image: url("/huy.jpg");
+
+  background-size: cover;
+
+  background-position: center center;
+
+  background-repeat: no-repeat;
+
+  filter:
+    blur(14px)
+    saturate(0.88)
+    brightness(1.02);
+
+  transform: scale(1.08);
+
+  /* Tăng độ nhìn thấy ảnh */
+opacity: 0.60;
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   LỚP MÀU KEM TRONG SUỐT
+============================================================ */
+
+.premium-bg-light {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+
+      rgba(255, 253, 246, 0.08) 0%,
+
+      rgba(247, 235, 211, 0.12) 52%,
+
+      rgba(213, 194, 160, 0.18) 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   MAIN CARD
+============================================================ */
+
+.premium-card {
+  position: relative;
+
+  z-index: 10;
+
+  width: min(520px, 92vw);
+
+  height: min(900px, calc(100dvh - 32px));
+
+  min-height: 700px;
+
+  overflow: hidden;
+
+  border-radius: 34px;
+
+  background: #eee2cc;
+
+  box-shadow:
+    0 35px 90px rgba(76, 57, 34, 0.28),
+    0 10px 30px rgba(76, 57, 34, 0.18);
+
+  isolation: isolate;
+}
+
+
+/* ============================================================
+   MAIN CARD
+============================================================ */
+
+.premium-card {
+  position: relative;
+
+  z-index: 10;
+
+  width: min(520px, 92vw);
+
+  height: min(900px, calc(100dvh - 32px));
+
+  min-height: 700px;
+
+  overflow: hidden;
+
+  border-radius: 34px;
+
+  background: #eee2cc;
+
+  box-shadow:
+    0 35px 90px rgba(76, 57, 34, 0.28),
+    0 10px 30px rgba(76, 57, 34, 0.18);
+
+  isolation: isolate;
+}
+
+/* ============================================================
+   MAIN PHOTO
+============================================================ */
+
+.premium-main-photo {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 0;
+
+  object-fit: cover;
+
+  object-position: center center;
+
+  filter:
+    saturate(0.98)
+    contrast(1.01)
+    brightness(1.04);
+}
+
+/* ============================================================
+   PHOTO WARMING
+============================================================ */
+
+.premium-photo-tone {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 232, 190, 0.10),
+      rgba(176, 133, 70, 0.04)
+    );
+
+  mix-blend-mode: soft-light;
+}
+
+/* ============================================================
+   TOP SHADE
+============================================================ */
+
+.premium-top-shade {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 43%;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(32, 25, 17, 0.24),
+      rgba(32, 25, 17, 0.07) 45%,
+      transparent
+    );
+}
+
+/* ============================================================
+   BOTTOM FADE
+============================================================ */
+
+.premium-bottom-fade {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 67%;
+
+  z-index: 3;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(250, 246, 237, 0.04) 10%,
+      rgba(250, 246, 237, 0.22) 27%,
+      rgba(250, 246, 237, 0.55) 48%,
+      rgba(250, 246, 237, 0.84) 68%,
+      rgba(250, 246, 237, 0.97) 100%
+    );
+}
+
+/* ============================================================
+   GOLD FRAME
+============================================================ */
+
+.premium-border {
+  position: absolute;
+
+  inset: 17px;
+
+  z-index: 120;
+
+  pointer-events: none;
+
+  border:
+    1px solid rgba(229, 197, 139, 0.90);
+
+  border-radius: 2px;
+}
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.premium-header {
+  position: absolute;
+
+  top: 32px;
+
+  left: 39px;
+  right: 39px;
+
+  z-index: 130;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  color: #fff1ca;
+
+  font-family:
+    "Times New Roman",
+    serif;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.30em;
+
+  text-shadow:
+    0 2px 8px rgba(40, 27, 14, 0.35);
+}
+
+.header-year {
+  letter-spacing: 0.26em;
+}
+
+/* ============================================================
+   TITLE AREA
+============================================================ */
+
+.premium-title {
+  position: absolute;
+
+  top: 70px;
+
+  left: 20px;
+  right: 20px;
+
+  z-index: 130;
+
+  text-align: center;
+
+  color: white;
+}
+
+.title-overline {
+  font-family:
+    "Times New Roman",
+    serif;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.31em;
+
+  color: #fff9ec;
+
+  text-shadow:
+    0 2px 8px rgba(28, 19, 10, 0.38);
+}
+
+.title-line {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  margin-top: 11px;
+}
+
+.title-line span {
+  width: 40px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #e6c27f
+    );
+}
+
+.title-line span:last-child {
+  background:
+    linear-gradient(
+      90deg,
+      #e6c27f,
+      transparent
+    );
+}
+
+.title-line b {
+  color: #e8bf6c;
+
+  font-size: 8px;
+}
+
+/* ============================================================
+   GRADUATION HEADING
+============================================================ */
+
+.graduation-heading {
+  position: relative;
+
+  display: inline-block;
+
+  margin-top: 18px;
+}
+
+.graduation-heading h1 {
+  margin: 0;
+
+  color: #fffdf8;
+
+  font-family:
+    var(--font-great-vibes),
+    "Ballet",
+    "Allura",
+    cursive;
+
+  font-size: 84px;
+
+  font-weight: 400;
+
+  line-height: 0.88;
+
+  letter-spacing: -0.025em;
+
+  white-space: nowrap;
+
+  text-shadow:
+    0 2px 2px rgba(255, 255, 255, 0.78),
+    0 5px 17px rgba(36, 23, 10, 0.38);
+}
+
+/* ============================================================
+   GRADUATION CAP
+============================================================ */
+
+.cap-decoration {
+  position: absolute;
+
+  width: 48px;
+
+  height: auto;
+
+  top: -14px;
+
+  left: -15px;
+
+  z-index: 10;
+
+  filter:
+    drop-shadow(
+      0 4px 7px rgba(20, 12, 5, 0.40)
+    );
+
+  transform: rotate(-8deg);
+}
+
+/* ============================================================
+   CEREMONY
+============================================================ */
+
+.ceremony-heading {
+  margin-top: 15px;
+
+  color: #f1b340;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: 19px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.42em;
+
+  text-indent: 0.42em;
+
+  text-shadow:
+    0 2px 8px rgba(47, 30, 12, 0.30);
+}
+
+/* ============================================================
+   GHOST PHOTO
+============================================================ */
+
+.ghost-photo {
+  position: absolute;
+
+  right: -85px;
+
+  bottom: 150px;
+
+  z-index: 5;
+
+  width: 330px;
+  height: 440px;
+
+  overflow: hidden;
+
+  opacity: 0.095;
+
+  pointer-events: none;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent,
+      black 15%,
+      black 78%,
+      transparent
+    );
+
+  -webkit-mask-image:
+    linear-gradient(
+      to bottom,
+      transparent,
+      black 15%,
+      black 78%,
+      transparent
+    );
+}
+
+.ghost-photo img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  object-position: center;
+
+  filter:
+    grayscale(1)
+    contrast(0.8)
+    brightness(1.25);
+
+  transform: scale(1.15);
+}
+
+/* ============================================================
+   CONTENT
+============================================================ */
+
+.premium-content {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 80;
+
+  padding:
+    28px
+    22px
+    18px;
+
+  overflow: hidden;
+}
+
+.content-glass {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: -3;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 252, 244, 0.08),
+      rgba(255, 252, 244, 0.40) 22%,
+      rgba(255, 252, 244, 0.73) 51%,
+      rgba(255, 252, 244, 0.94) 82%,
+      rgba(255, 252, 244, 0.98)
+    );
+
+  backdrop-filter: blur(2px);
+
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* ============================================================
+   TDT WATERMARK
+============================================================ */
+
+.tdt-watermark {
+  position: absolute;
+
+  z-index: -2;
+
+  width: 300px;
+
+  left: 50%;
+  top: 55px;
+
+  transform: translateX(-50%);
+
+  opacity: 0.065;
+
+  pointer-events: none;
+}
+
+.tdt-watermark img {
+  width: 100%;
+  height: auto;
+
+  filter:
+    grayscale(1)
+    brightness(1.2);
+}
+
+/* ============================================================
+   CONTENT INNER
+============================================================ */
+
+.premium-content-inner {
+  position: relative;
+
+  z-index: 20;
+
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+}
+
+/* ============================================================
+   GUEST
+============================================================ */
+
+.guest-section {
+  width: 100%;
+
+  text-align: center;
+}
+
+.dear-script {
+  color: #e6a04a;
+
+  font-family:
+    var(--font-great-vibes),
+    "Allura",
+    cursive;
+
+  font-size: 34px;
+
+  line-height: 1;
+}
+
+.guest-name-premium {
+  min-height: 42px;
+
+  margin-top: 5px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #33271e;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: 28px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.075em;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+}
+
+/* ============================================================
+   GUEST SEPARATOR
+============================================================ */
+
+.guest-separator {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  margin-top: 4px;
+}
+
+.guest-separator span {
+  width: 42px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(157, 116, 58, 0.58)
+    );
+}
+
+.guest-separator span:last-child {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(157, 116, 58, 0.58),
+      transparent
+    );
+}
+
+.guest-separator b {
+  color: #ae8043;
+
+  font-size: 7px;
+}
+
+/* ============================================================
+   MESSAGE
+============================================================ */
+
+.premium-message {
+  margin:
+    12px
+    auto
+    15px;
+
+  max-width: 410px;
+
+  color: #49382c;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: 15px;
+
+  line-height: 1.5;
+
+  text-align: center;
+
+  font-weight: 500;
+
+  text-shadow:
+    0 1px 1px rgba(255, 255, 255, 0.75);
+}
+
+/* ============================================================
+   EVENT GRID
+============================================================ */
+
+.event-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 10px;
+}
+
+/* ============================================================
+   EVENT CARD
+============================================================ */
+
+.event-card-premium {
+  min-height: 82px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 10px;
+
+  border:
+    1px solid rgba(148, 109, 57, 0.19);
+
+  border-radius: 17px;
+
+  background:
+    rgba(255, 255, 255, 0.78);
+
+  box-shadow:
+    0 8px 22px rgba(72, 50, 25, 0.10);
+
+  backdrop-filter: blur(7px);
+
+  -webkit-backdrop-filter: blur(7px);
+}
+
+/* ============================================================
+   LOCATION CARD
+============================================================ */
+
+.event-location {
+  grid-column: 1 / -1;
+
+  min-height: 74px;
+
+  justify-content: center;
+
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/* ============================================================
+   EVENT CIRCLE
+============================================================ */
+
+.event-circle {
+  flex: 0 0 42px;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff2d2,
+      #e7ca91
+    );
+
+  border:
+    1px solid rgba(143, 105, 53, 0.22);
+
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.8),
+    0 2px 5px rgba(80, 54, 23, 0.10);
+}
+
+.event-svg {
+  width: 19px;
+  height: 19px;
+
+  fill: none;
+
+  stroke: #76572f;
+
+  stroke-width: 1.5;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ============================================================
+   EVENT COPY
+============================================================ */
+
+.event-copy {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+}
+
+.event-title {
+  color: #987348;
+
+  font-family:
+    "Times New Roman",
+    serif;
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.17em;
+}
+
+.event-copy strong {
+  margin-top: 4px;
+
+  color: #3b2d21;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: 20px;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  white-space: nowrap;
+}
+
+.event-copy small {
+  margin-top: 4px;
+
+  color: #776854;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: 8px;
+
+  line-height: 1.1;
+
+  white-space: nowrap;
+}
+
+/* ============================================================
+   NOTE
+============================================================ */
+
+.premium-note {
+  margin-top: 11px;
+
+  color: #695846;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: 11px;
+
+  font-style: italic;
+
+  line-height: 1.35;
+
+  text-align: center;
+
+  max-width: 380px;
+}
+
+/* ============================================================
+   MAP BUTTON
+============================================================ */
+
+.premium-map-button {
+  width: 175px;
+
+  height: 36px;
+
+  margin-top: 10px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  border-radius: 999px;
+
+  color: #fff8e9;
+
+  background:
+    linear-gradient(
+      110deg,
+      #453725,
+      #795b30,
+      #453725
+    );
+
+  box-shadow:
+    0 9px 20px rgba(57, 40, 19, 0.28),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.19em;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.premium-map-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(57, 40, 19, 0.32);
+}
+
+.premium-map-button b {
+  font-size: 13px;
+
+  font-weight: 400;
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.premium-footer {
+  margin-top: 8px;
+
+  text-align: center;
+}
+
+.footer-heart {
+  color: #a86152;
+
+  font-size: 13px;
+
+  line-height: 1;
+}
+
+.footer-love {
+  margin-top: 2px;
+
+  color: #9a876b;
+
+  font-size: 6px;
+
+  letter-spacing: 0.30em;
+}
+
+.footer-signature {
+  margin-top: 3px;
+
+  color: #3d3026;
+
+  font-family:
+    var(--font-great-vibes),
+    "Allura",
+    cursive;
+
+  font-size: 34px;
+
+  line-height: 0.9;
+
+  white-space: nowrap;
+}
+
+.footer-rule {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  margin-top: 4px;
+}
+
+.footer-rule span {
+  width: 32px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #b99156
+    );
+}
+
+.footer-rule span:last-child {
+  background:
+    linear-gradient(
+      90deg,
+      #b99156,
+      transparent
+    );
+}
+
+.footer-rule b {
+  color: #a77b40;
+
+  font-size: 6px;
+}
+
+.footer-caption {
+  margin-top: 4px;
+
+  color: #8f8069;
+
+  font-size: 5px;
+
+  letter-spacing: 0.28em;
+}
+
+.footer-university {
+  margin-top: 3px;
+
+  color: #9c907e;
+
+  font-size: 5px;
+
+  letter-spacing: 0.14em;
+}
+
+/* ============================================================
+   DESKTOP
+============================================================ */
+
+@media (min-width: 700px) {
+  .premium-card {
+    width: 520px;
+
+    height: min(
+      900px,
+      calc(100dvh - 32px)
+    );
+
+    min-height: 700px;
+  }
+
+  .premium-content {
+    padding:
+      30px
+      24px
+      20px;
+  }
+
+  .graduation-heading h1 {
+    font-size: 84px;
+  }
+
+  .premium-message {
+    font-size: 15px;
+  }
+
+  .event-copy strong {
+    font-size: 20px;
+  }
+}
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 699px) and (min-width: 601px) {
+  .premium-card {
+    width: min(500px, 94vw);
+
+    height: min(
+      880px,
+      calc(100dvh - 30px)
+    );
+  }
+}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 600px) {
+  .premium-invitation-page {
+    padding: 0;
+  }
+
+  .premium-card {
+    width: 100vw;
+
+    height: 100dvh;
+
+    min-height: 680px;
+
+    border-radius: 0;
+  }
+
+  .premium-border {
+    inset: 14px;
+  }
+
+  .premium-header {
+    top: 27px;
+
+    left: 30px;
+    right: 30px;
+
+    font-size: 9px;
+  }
+
+  .premium-title {
+    top: 64px;
+  }
+
+  .graduation-heading h1 {
+    font-size: 68px;
+  }
+
+  .cap-decoration {
+    width: 41px;
+
+    top: -13px;
+
+    left: -10px;
+  }
+
+  .ceremony-heading {
+    font-size: 16px;
+
+    margin-top: 12px;
+  }
+
+  .premium-content {
+    padding:
+      25px
+      17px
+      14px;
+  }
+
+  .dear-script {
+    font-size: 30px;
+  }
+
+  .guest-name-premium {
+    font-size: 23px;
+  }
+
+  .premium-message {
+    font-size: 13px;
+
+    line-height: 1.45;
+
+    margin-top: 9px;
+  }
+
+  .event-card-premium {
+    min-height: 75px;
+
+    padding: 8px;
+
+    gap: 7px;
+  }
+
+  .event-circle {
+    flex-basis: 36px;
+
+    width: 36px;
+    height: 36px;
+  }
+
+  .event-copy strong {
+    font-size: 16px;
+  }
+
+  .event-copy small {
+    font-size: 7px;
+  }
+
+  .event-title {
+    font-size: 6px;
+  }
+
+  .event-location {
+    min-height: 65px;
+  }
+
+  .premium-note {
+    font-size: 10px;
+  }
+
+  .premium-map-button {
+    width: 160px;
+
+    height: 34px;
+  }
+
+  .footer-signature {
+    font-size: 29px;
+  }
+}
+
+/* ============================================================
+   SMALL PHONES
+============================================================ */
+
+@media (max-width: 390px) {
+  .premium-header {
+    top: 25px;
+
+    left: 27px;
+    right: 27px;
+  }
+
+  .premium-title {
+    top: 61px;
+  }
+
+  .graduation-heading h1 {
+    font-size: 60px;
+  }
+
+  .cap-decoration {
+    width: 38px;
+
+    left: -7px;
+  }
+
+  .guest-name-premium {
+    font-size: 21px;
+  }
+
+  .premium-message {
+    font-size: 11px;
+  }
+
+  .event-grid {
+    gap: 6px;
+  }
+
+  .event-card-premium {
+    padding: 7px;
+
+    gap: 5px;
+  }
+
+  .event-circle {
+    flex-basis: 31px;
+
+    width: 31px;
+    height: 31px;
+  }
+
+  .event-copy strong {
+    font-size: 14px;
+  }
+
+  .event-copy small {
+    font-size: 5.5px;
+  }
+
+  .footer-signature {
+    font-size: 25px;
+  }
+}
+
+.premium-header {
+  color: #fff8df;
+  text-shadow:
+    0 1px 3px rgba(40, 25, 10, 0.45),
+    0 0 10px rgba(255, 226, 160, 0.18);
+}
+
+/* ============================================================
+   FINAL TEXT STYLE
+   CHỈ ĐỔI MÀU + FONT + ĐỘ RÕ CHỮ
+   KHÔNG ĐỤNG LAYOUT / KÍCH THƯỚC / VỊ TRÍ
+   ============================================================ */
+
+
+/* =========================
+   INVITATION + 2026
+   ========================= */
+
+.premium-header {
+  color: #fff4d6;
+
+  text-shadow:
+    0 1px 3px rgba(55, 35, 15, 0.45),
+    0 0 8px rgba(255, 226, 160, 0.22);
+}
+
+
+/* =========================
+   YOU ARE CORDIALLY INVITED
+   ========================= */
+
+.title-overline {
+  color: #fffaf0;
+
+  text-shadow:
+    0 2px 5px rgba(45, 28, 12, 0.42),
+    0 0 8px rgba(255, 244, 215, 0.25);
+}
+
+
+/* =========================
+   GRADUATION
+   ========================= */
+
+.graduation-heading h1 {
+  color: #fffdf8;
+
+  font-family:
+    var(--font-great-vibes),
+    "Ballet",
+    "Allura",
+    cursive;
+
+  font-weight: 400;
+
+  text-shadow:
+    0 1px 2px rgba(255, 255, 255, 0.95),
+    0 3px 6px rgba(255, 244, 220, 0.72),
+    0 6px 16px rgba(50, 30, 12, 0.40),
+    0 0 10px rgba(255, 228, 170, 0.28);
+}
+
+
+/* =========================
+   GRADUATION CAP
+   ========================= */
+
+.cap-decoration {
+  filter:
+    drop-shadow(0 4px 7px rgba(20, 12, 5, 0.40))
+    drop-shadow(0 0 5px rgba(255, 215, 120, 0.20));
+}
+
+
+/* =========================
+   CEREMONY
+   ========================= */
+
+.ceremony-heading {
+  color: #d8a94f;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-weight: 600;
+
+  text-shadow:
+    0 1px 2px rgba(75, 45, 15, 0.35),
+    0 0 7px rgba(255, 215, 130, 0.22);
+}
+
+
+/* =========================
+   DEAR
+   ========================= */
+
+.dear-script {
+  color: #a1743e;
+
+  font-family:
+    var(--font-great-vibes),
+    "Allura",
+    cursive;
+
+  font-weight: 400;
+
+  text-shadow:
+    0 1px 2px rgba(255, 247, 226, 0.80),
+    0 3px 7px rgba(70, 40, 15, 0.18);
+}
+
+
+/* =========================
+   ANH / CHỊ / BẠN
+   ========================= */
+
+.guest-name-premium {
+  color: #34251d;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-weight: 700;
+
+  text-shadow:
+    0 1px 1px rgba(255, 255, 255, 0.85);
+}
+
+
+/* =========================
+   DẤU TRANG TRÍ
+   ========================= */
+
+.guest-separator b {
+  color: #b88945;
+
+  text-shadow:
+    0 0 5px rgba(220, 175, 90, 0.30);
+}
+
+
+/* =========================
+   THÔNG ĐIỆP
+   ========================= */
+
+.premium-message {
+  color: #110f0d;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-weight: 500;
+
+  text-shadow:
+    0 1px 1px rgba(255, 255, 255, 0.88);
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+
+/* =========================
+   TIÊU ĐỀ NGÀY / GIỜ / ĐỊA ĐIỂM
+   ========================= */
+
+.event-title {
+  color: #9b713f;
+
+  font-family:
+  "Cormorant Garamond",
+  
+    serif;
+
+  font-weight: 700;
+
+  text-shadow:
+    0 1px 1px rgba(255, 255, 255, 0.80);
+}
+
+
+/* =========================
+   GIÁ TRỊ NGÀY / GIỜ / SẢNH
+   ========================= */
+
+.event-copy strong {
+  color: #35271f;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-weight: 700;
+
+  text-shadow:
+    0 1px 1px rgba(255, 255, 255, 0.85);
+}
+
+
+/* =========================
+   DÒNG NHỎ BÊN DƯỚI
+   ========================= */
+
+.event-copy small {
+  color: #786653;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  text-shadow:
+    0 1px 1px rgba(255, 255, 255, 0.75);
+}
+
+
+/* =========================
+   SỰ HIỆN DIỆN...
+   ========================= */
+
+.premium-note {
+  color: #574536;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-style: italic;
+
+  text-shadow:
+    0 1px 1px rgba(255, 255, 255, 0.85);
+}
+
+
+/* =========================
+   XEM VỊ TRÍ
+   ========================= */
+
+.premium-map-button {
+  color: #fff8e9;
+
+  text-shadow:
+    0 1px 2px rgba(30, 18, 7, 0.40);
+}
+
+
+/* =========================
+   WITH LOVE
+   ========================= */
+
+.footer-love {
+  color: #8e795e;
+
+  text-shadow:
+    0 1px 2px rgba(255, 255, 255, 0.75);
+}
+
+
+/* =========================
+   NGUYỄN QUANG HUY
+   ========================= */
+
+.footer-signature {
+  color: #39281f;
+
+  font-family:
+    var(--font-great-vibes),
+    "Allura",
+    cursive;
+
+  font-weight: 400;
+
+  text-shadow:
+    0 1px 2px rgba(255, 255, 255, 0.88),
+    0 3px 8px rgba(60, 35, 15, 0.16);
+}
+
+
+/* =========================
+   NEW CHAPTER / TDTU
+   ========================= */
+
+.footer-caption {
+  color: #89765d;
+
+  text-shadow:
+    0 1px 2px rgba(255, 255, 255, 0.75);
+}
+
+.footer-university {
+  color: #8e806d;
+
+  text-shadow:
+    0 1px 2px rgba(255, 255, 255, 0.75);
+
+}
+/* ============================================================
+   BIG COLORFUL FIREWORKS
+============================================================ */
+
+.fireworks-container {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 50;
+}
+
+/* ============================================================
+   FIREWORK CORE
+============================================================ */
+
+.firework {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  opacity: 0;
+
+  animation:
+    firework-explode 4.8s ease-out infinite;
+
+  filter:
+    drop-shadow(0 0 8px rgba(255, 255, 255, 0.9))
+    drop-shadow(0 0 18px currentColor);
+}
+
+/* ============================================================
+   PARTICLES
+============================================================ */
+
+.firework span {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 5px;
+  height: 75px;
+
+  margin-left: -2.5px;
+
+  border-radius: 999px;
+
+  transform-origin: 50% 0%;
+
+  opacity: 0;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    currentColor 18%,
+    currentColor 55%,
+    rgba(255, 255, 255, 0) 100%
+  );
+
+  box-shadow:
+    0 0 7px currentColor,
+    0 0 15px currentColor,
+    0 0 30px currentColor;
+
+  animation:
+    firework-particle 4.8s ease-out infinite;
+}
+
+/* ============================================================
+   12 DIRECTIONS
+============================================================ */
+
+.firework span:nth-child(1) {
+  transform: rotate(0deg);
+}
+
+.firework span:nth-child(2) {
+  transform: rotate(30deg);
+}
+
+.firework span:nth-child(3) {
+  transform: rotate(60deg);
+}
+
+.firework span:nth-child(4) {
+  transform: rotate(90deg);
+}
+
+.firework span:nth-child(5) {
+  transform: rotate(120deg);
+}
+
+.firework span:nth-child(6) {
+  transform: rotate(150deg);
+}
+
+.firework span:nth-child(7) {
+  transform: rotate(180deg);
+}
+
+.firework span:nth-child(8) {
+  transform: rotate(210deg);
+}
+
+.firework span:nth-child(9) {
+  transform: rotate(240deg);
+}
+
+.firework span:nth-child(10) {
+  transform: rotate(270deg);
+}
+
+.firework span:nth-child(11) {
+  transform: rotate(300deg);
+}
+
+.firework span:nth-child(12) {
+  transform: rotate(330deg);
+}
+
+/* ============================================================
+   BIG FIREWORK 1 - GOLD
+============================================================ */
+
+.firework-1 {
+  left: 8%;
+  top: 20%;
+
+  color: #ffd700;
+
+  transform: scale(1.35);
+
+  animation-delay: 0s;
+}
+
+/* ============================================================
+   BIG FIREWORK 2 - PINK
+============================================================ */
+
+.firework-2 {
+  right: 8%;
+  top: 25%;
+
+  color: #ff4fa3;
+
+  transform: scale(1.45);
+
+  animation-delay: 0.9s;
+}
+
+/* ============================================================
+   BIG FIREWORK 3 - BLUE
+============================================================ */
+
+.firework-3 {
+  left: 12%;
+  bottom: 17%;
+
+  color: #38bdf8;
+
+  transform: scale(1.15);
+
+  animation-delay: 1.8s;
+}
+
+/* ============================================================
+   BIG FIREWORK 4 - PURPLE
+============================================================ */
+
+.firework-4 {
+  right: 12%;
+  bottom: 20%;
+
+  color: #c084fc;
+
+  transform: scale(1.25);
+
+  animation-delay: 2.7s;
+}
+
+/* ============================================================
+   EXPLOSION
+============================================================ */
+
+@keyframes firework-explode {
+
+  0% {
+    opacity: 0;
+    transform: scale(0.05);
+  }
+
+  5% {
+    opacity: 0;
+    transform: scale(0.05);
+  }
+
+  10% {
+    opacity: 1;
+    transform: scale(0.35);
+  }
+
+  18% {
+    opacity: 1;
+    transform: scale(0.75);
+  }
+
+  28% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  42% {
+    opacity: 0.9;
+    transform: scale(1.08);
+  }
+
+  58% {
+    opacity: 0.6;
+    transform: scale(1.14);
+  }
+
+  75% {
+    opacity: 0.25;
+    transform: scale(1.2);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.28);
+  }
+}
+
+/* ============================================================
+   PARTICLE ANIMATION
+============================================================ */
+
+@keyframes firework-particle {
+
+  0% {
+    height: 2px;
+    opacity: 0;
+
+    box-shadow:
+      0 0 0 transparent,
+      0 0 0 transparent;
+  }
+
+  8% {
+    height: 12px;
+    opacity: 1;
+  }
+
+  18% {
+    height: 45px;
+    opacity: 1;
+
+    box-shadow:
+      0 0 8px currentColor,
+      0 0 18px currentColor,
+      0 0 35px currentColor;
+  }
+
+  32% {
+    height: 75px;
+    opacity: 1;
+  }
+
+  48% {
+    height: 95px;
+    opacity: 0.9;
+  }
+
+  65% {
+    height: 110px;
+    opacity: 0.55;
+  }
+
+  82% {
+    height: 120px;
+    opacity: 0.2;
+  }
+
+  100% {
+    height: 130px;
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   EXTRA COLOR PARTICLES
+============================================================ */
+
+.firework-1 span:nth-child(3),
+.firework-1 span:nth-child(9) {
+  background: linear-gradient(
+    to bottom,
+    #ffffff,
+    #fff700,
+    rgba(255, 215, 0, 0)
+  );
+}
+
+.firework-2 span:nth-child(2),
+.firework-2 span:nth-child(8) {
+  background: linear-gradient(
+    to bottom,
+    #ffffff,
+    #ff1493,
+    rgba(255, 20, 147, 0)
+  );
+}
+
+.firework-3 span:nth-child(4),
+.firework-3 span:nth-child(10) {
+  background: linear-gradient(
+    to bottom,
+    #ffffff,
+    #00d9ff,
+    rgba(0, 217, 255, 0)
+  );
+}
+
+.firework-4 span:nth-child(1),
+.firework-4 span:nth-child(7) {
+  background: linear-gradient(
+    to bottom,
+    #ffffff,
+    #b026ff,
+    rgba(176, 38, 255, 0)
+  );
+}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 600px) {
+
+  .firework-1 {
+    left: 4%;
+    top: 18%;
+    transform: scale(0.95);
+  }
+
+  .firework-2 {
+    right: 4%;
+    top: 24%;
+    transform: scale(1);
+  }
+
+  .firework-3 {
+    left: 6%;
+    bottom: 15%;
+    transform: scale(0.8);
+  }
+
+  .firework-4 {
+    right: 6%;
+    bottom: 18%;
+    transform: scale(0.85);
+  }
+
+  .firework span {
+    width: 4px;
+  }
+}
+
+/* ============================================================
+   REDUCE MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .fireworks-container {
+    display: none;
+  }
+
+}
+/* ============================================================
+   QHy FLOATING LETTERS
+============================================================ */
+
+.qhy-floating-container {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 45;
+}
+
+/* Chữ QHy */
+
+.qhy {
+  position: absolute;
+
+  bottom: -80px;
+
+  font-family:
+    "Times New Roman",
+    Georgia,
+    serif;
+
+  font-size: clamp(22px, 3vw, 38px);
+
+  font-weight: 700;
+
+  letter-spacing: 3px;
+
+  color: rgba(255, 248, 220, 0.95);
+
+  text-shadow:
+    0 0 5px rgba(255, 255, 255, 0.9),
+    0 0 12px rgba(255, 215, 100, 0.9),
+    0 0 25px rgba(255, 190, 80, 0.65);
+
+  opacity: 0;
+
+  animation:
+    qhy-float 9s ease-in-out infinite;
+}
+
+/* ============================================================
+   VỊ TRÍ + THỜI GIAN
+============================================================ */
+
+.qhy-1 {
+  left: 8%;
+  animation-delay: 0s;
+}
+
+.qhy-2 {
+  left: 20%;
+  animation-delay: 2.2s;
+  font-size: 28px;
+}
+
+.qhy-3 {
+  left: 34%;
+  animation-delay: 4.5s;
+  font-size: 24px;
+}
+
+.qhy-4 {
+  left: 50%;
+  animation-delay: 1.3s;
+  font-size: 34px;
+}
+
+.qhy-5 {
+  left: 64%;
+  animation-delay: 5.5s;
+  font-size: 25px;
+}
+
+.qhy-6 {
+  left: 76%;
+  animation-delay: 3.1s;
+  font-size: 32px;
+}
+
+.qhy-7 {
+  left: 88%;
+  animation-delay: 6.2s;
+  font-size: 24px;
+}
+
+.qhy-8 {
+  left: 42%;
+  animation-delay: 7.3s;
+  font-size: 22px;
+}
+
+/* ============================================================
+   BAY LÊN
+============================================================ */
+
+@keyframes qhy-float {
+
+  0% {
+    transform:
+      translate3d(0, 0, 0)
+      rotate(-8deg)
+      scale(0.75);
+
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.85;
+  }
+
+  25% {
+    transform:
+      translate3d(-12px, -20vh, 0)
+      rotate(5deg)
+      scale(0.9);
+
+    opacity: 0.9;
+  }
+
+  45% {
+    transform:
+      translate3d(15px, -42vh, 0)
+      rotate(-5deg)
+      scale(1);
+
+    opacity: 0.8;
+  }
+
+  65% {
+    transform:
+      translate3d(-10px, -65vh, 0)
+      rotate(7deg)
+      scale(1.05);
+
+    opacity: 0.55;
+  }
+
+  82% {
+    transform:
+      translate3d(18px, -82vh, 0)
+      rotate(-4deg)
+      scale(1.1);
+
+    opacity: 0.25;
+  }
+
+  100% {
+    transform:
+      translate3d(-5px, -110vh, 0)
+      rotate(5deg)
+      scale(1.15);
+
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 600px) {
+
+  .qhy {
+    font-size: 21px;
+    letter-spacing: 2px;
+  }
+
+  .qhy-2,
+  .qhy-5,
+  .qhy-7 {
+    font-size: 18px;
+  }
+
+  .qhy-4,
+  .qhy-6 {
+    font-size: 25px;
+  }
+}
+
+/* ============================================================
+   REDUCE MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .qhy-floating-container {
+    display: none;
+  }
+}
+/* ============================================================
+   HEART INTRO
+   KHÔNG ẢNH HƯỞNG KÍCH THƯỚC THIỆP
+============================================================ */
+
+.heart-intro {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100dvh;
+
+  overflow: hidden;
+
+  z-index: 9999;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(255, 250, 250, 1) 0%,
+      rgba(255, 225, 232, 0.98) 38%,
+      rgba(255, 180, 198, 0.96) 100%
+    );
+}
+
+.heart-intro-glow {
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 180, 205, 0.35) 38%,
+      transparent 72%
+    );
+
+  animation: heart-intro-glow 2.5s ease-in-out infinite;
+}
+
+.heart-field {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+}
+
+.intro-heart {
+  position: absolute;
+
+  bottom: -100px;
+
+  font-family: Arial, sans-serif;
+
+  color: #ff3f78;
+
+  line-height: 1;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,1),
+    0 0 12px rgba(255,70,120,0.95),
+    0 0 25px rgba(255,50,100,0.8),
+    0 0 45px rgba(255,50,100,0.5);
+
+  will-change: transform, opacity;
+}
+
+.heart-intro-title {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  color: white;
+
+  white-space: nowrap;
+
+  text-align: center;
+
+  text-shadow:
+    0 0 10px white,
+    0 0 25px rgba(255,70,120,0.95),
+    0 0 50px rgba(255,50,100,0.75);
+}
+
+.heart-intro-title span {
+  font-family:
+    "Times New Roman",
+    Georgia,
+    serif;
+
+  font-size: clamp(70px, 12vw, 150px);
+
+  font-weight: 700;
+
+  letter-spacing: 8px;
+}
+
+.heart-intro-title small {
+  margin-top: -8px;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  letter-spacing: 7px;
+}
+
+@keyframes heart-intro-glow {
+
+  0% {
+    opacity: 0.7;
+    transform: scale(0.96);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+
+  100% {
+    opacity: 0.7;
+    transform: scale(0.96);
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .heart-intro-title span {
+    font-size: 76px;
+    letter-spacing: 5px;
+  }
+
+  .heart-intro-title small {
+    font-size: 9px;
+    letter-spacing: 4px;
+  }
+
+  .intro-heart {
+    text-shadow:
+      0 0 5px white,
+      0 0 12px rgba(255,50,100,0.9),
+      0 0 25px rgba(255,50,100,0.7);
+  }
+}
+/* ============================================================
+   CEREMONY + DEAR — MÀU SÁNG HƠN
+============================================================ */
+
+.ceremony-heading {
+  color: #e4e0d4 !important;
+
+  text-shadow:
+    0 1px 2px rgba(238, 233, 233, 0.95),
+    0 3px 10px rgba(23, 19, 9, 0.75),
+    0 0 18px #eaddbf !important;
+}
+
+.dear-script {
+  color: #978244 !important;
+
+  text-shadow:
+    0 1px 2px rgba(252, 233, 233, 0.95),
+    0 3px 10px rgba(55, 44, 24, 0.8),
+    0 0 18px rgba(238, 198, 124, 0.45) !important;
+}
+/* ============================================================
+   PHONE - BOTTOM RIGHT
+============================================================ */
+
+.bottom-phone {
+    position: absolute;
+    right: 28px;
+    bottom: 24px;
+
+    z-index: 50;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    color: #6f5330;
+    text-decoration: none;
+
+    font-family:
+        "Times New Roman",
+        Georgia,
+        serif;
+
+    font-size: 11px;
+    letter-spacing: 0.08em;
+
+    opacity: 0.9;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+.bottom-phone:hover {
+    transform: translateY(-2px);
+    opacity: 1;
+}
+
+.bottom-phone .event-svg {
+    width: 14px;
+    height: 14px;
+
+    fill: none;
+    stroke: #76572f;
+    stroke-width: 1.5;
+
+    flex-shrink: 0;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+    .bottom-phone {
+        right: 20px;
+        bottom: 18px;
+
+        font-size: 9px;
+        gap: 5px;
+    }
+
+    .bottom-phone .event-svg {
+        width: 12px;
+        height: 12px;
+    }
+}
+/* HIỂN THỊ ẢNH RÕ HƠN Ở PHẦN DƯỚI THIỆP */
+
+.premium-bottom-fade {
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(250, 246, 237, 0.01) 25%,
+        rgba(250, 246, 237, 0.04) 50%,
+        rgba(250, 246, 237, 0.08) 75%,
+        rgba(250, 246, 237, 0.12) 100%
+    ) !important;
+}
+
+.content-glass {
+    background: rgba(255, 252, 244, 0.04) !important;
+    backdrop-filter: blur(0px) !important;
+    -webkit-backdrop-filter: blur(0px) !important;
+}
+
+.premium-content {
+    background: transparent !important;
+}
+
+/* SCROLLABLE INVITATION CONTENT */
+.premium-content-scroll {
+    top: 250px;
+    bottom: 0;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior: contain;
+}
+
+.premium-content-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.premium-content-inner {
+    padding-bottom: 28px;
+}
+
+/* ADDRESS */
+.iuh-address {
+    margin: 10px auto 12px;
+    max-width: 420px;
+    text-align: center;
+    color: #725a40;
+    font-family: Georgia, serif;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* PARKING */
+.parking-section {
+    width: 100%;
+    margin: 14px auto;
+    padding: 13px 15px;
+    border-top: 1px solid rgba(173, 133, 76, 0.4);
+    border-bottom: 1px solid rgba(173, 133, 76, 0.4);
+    background: rgba(255, 250, 239, 0.45);
+    color: #5c4630;
+}
+
+.parking-heading {
+    text-align: center;
+    color: #987344;
+    font-family: Georgia, serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.parking-subtitle {
+    text-align: center;
+    margin: 5px 0 12px;
+    color: #9b7b50;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.parking-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 9px 0;
+    font-family: Georgia, serif;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.parking-item > span {
+    color: #b18a52;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.parking-item p {
+    margin: 0;
+}
+
+.parking-item small {
+    display: block;
+    color: #927b61;
+    font-size: 10px;
+}
+
+/* THANK YOU */
+.thank-you-section {
+    text-align: center;
+    margin: 18px auto;
+    padding: 0 8px;
+    color: #554233;
+}
+
+.thank-you-flower {
+    color: #b69a70;
+    font-size: 24px;
+    margin-bottom: 7px;
+}
+
+.thank-you-section p {
+    font-family: Georgia, serif;
+    font-size: 12px;
+    line-height: 1.7;
+    font-style: italic;
+    margin: 0 auto;
+}
+
+.thank-you-signature {
+    margin-top: 13px;
+    color: #987044;
+    font-family: cursive;
+    font-size: 25px;
+    font-style: italic;
+}
+
+/* PHONE */
+.bottom-phone {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    margin: 12px auto;
+    justify-content: center;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    .premium-content-scroll {
+        top: 235px;
+    }
+
+    .parking-section {
+        padding: 11px;
+    }
+
+    .parking-item {
+        font-size: 11px;
+    }
+
+    .thank-you-section p {
+        font-size: 11px;
+    }
+
+    .thank-you-signature {
+        font-size: 23px;
+    }
+}
+
+
+/* LỜI MỜI - ĐOẠN GIỚI THIỆU */
+.premium-message {
+    font-family: Arial, "Segoe UI", sans-serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    color: #493522 !important;
+    letter-spacing: 0.1px !important;
+    line-height: 1.7 !important;
+}
+
+/* LỜI CẢM ƠN CUỐI THIỆP */
+.thank-you-section p {
+    font-family: Arial, "Segoe UI", sans-serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    color: #493522 !important;
+    letter-spacing: 0.1px !important;
+    line-height: 1.8 !important;
+}
+
+/* FIX FONT VÀ MÀU CHỮ - ƯU TIÊN CAO */
+
+/* ĐOẠN LỜI MỜI */
+body .premium-card .premium-message {
+    font-family: Arial, Tahoma, sans-serif !important;
+    font-size: inherit !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    color: #110801 !important;
+    letter-spacing: 0 !important;
+    text-shadow: none !important;
+}
+
+/* ĐOẠN LỜI CẢM ƠN */
+body .premium-card .thank-you-section p {
+    font-family: Arial, Tahoma, sans-serif !important;
+    font-size: inherit !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    color: #120901 !important;
+    letter-spacing: 0 !important;
+    line-height: 1.8 !important;
+    text-shadow: none !important;
+}
+/* ===== SMOKE INTRO - EXACTLY 5 SECONDS ===== */
+
+.smoke-intro {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 99999 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    background: #fffaf8 !important;
+    isolation: isolate;
+}
+
+.smoke-cloud {
+    position: absolute;
+    width: 120vw;
+    height: 75vh;
+    border-radius: 50%;
+
+   background:
+    radial-gradient(
+        ellipse at 30% 50%,
+        rgb(173, 216, 230) 0%,
+        rgba(135, 190, 225, 0.9) 18%,
+        rgba(80, 130, 195, 0.55) 38%,
+        rgba(225, 240, 250, 0.8) 55%,
+        transparent 75%
+    );
+
+    filter: blur(22px);
+    will-change: transform, opacity;
+}
+
+.smoke-left {
+    left: -65%;
+    top: 5%;
+    animation: smokeLeft 4.2s ease-in-out forwards;
+}
+
+.smoke-right {
+    right: -65%;
+    top: 15%;
+    animation: smokeRight 4.2s ease-in-out forwards;
+}
+
+.smoke-bottom {
+    left: -15%;
+    bottom: -55%;
+    animation: smokeBottom 4.2s ease-in-out forwards;
+}
+
+.smoke-top {
+    right: -20%;
+    top: -55%;
+    animation: smokeTop 4.2s ease-in-out forwards;
+}
+
+.smoke-center {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(255,255,255,.72),
+            transparent 65%
+        );
+    animation: smokeCenter 4.2s ease-in-out forwards;
+}
+
+@keyframes smokeLeft {
+    0% {
+        transform: translate(-20%, 10%) scale(.8) rotate(-15deg);
+        opacity: .2;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(75%, -5%) scale(1.5) rotate(12deg);
+        opacity: .9;
+    }
+}
+
+@keyframes smokeRight {
+    0% {
+        transform: translate(25%, -5%) scale(.8) rotate(15deg);
+        opacity: .2;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-75%, 10%) scale(1.5) rotate(-12deg);
+        opacity: .9;
+    }
+}
+
+@keyframes smokeBottom {
+    0% {
+        transform: translateY(35%) scale(.7);
+        opacity: .2;
+    }
+    50% {
+        opacity: .95;
+    }
+    100% {
+        transform: translateY(-65%) scale(1.4);
+        opacity: .8;
+    }
+}
+
+@keyframes smokeTop {
+    0% {
+        transform: translateY(-35%) scale(.7);
+        opacity: .2;
+    }
+    50% {
+        opacity: .95;
+    }
+    100% {
+        transform: translateY(65%) scale(1.4);
+        opacity: .8;
+    }
+}
+
+@keyframes smokeCenter {
+    0% {
+        opacity: .3;
+        transform: scale(.7);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+    100% {
+        opacity: .8;
+        transform: scale(1.4);
+    }
+}
+.smoke-welcome {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    pointer-events: none;
+
+    font-family: Arial, "Segoe UI", Tahoma, sans-serif;
+    color: #e9bd59;
+
+    text-shadow:
+        0 0 4px rgba(255, 220, 140, 0.55),
+        0 0 10px rgba(230, 180, 75, 0.35);
+}
+
+.smoke-welcome span {
+    font-family: Arial, "Segoe UI", Tahoma, sans-serif;
+    font-size: 23px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #e9bd59;
+}
+
+.smoke-welcome strong {
+    font-family: Arial, "Segoe UI", Tahoma, sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    line-height: 1.35;
+    color: #e9bd59;
+
+    text-shadow:
+        0 0 4px rgba(255, 225, 160, 0.6),
+        0 0 10px rgba(230, 180, 75, 0.4);
+}
