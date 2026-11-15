@@ -1685,8 +1685,9 @@ opacity: 0.60;
   }
 
   .graduation-heading h1 {
-    font-size: 60px;
+    font-size: 100px;
   }
+
 
   .cap-decoration {
     width: 38px;
@@ -1908,7 +1909,7 @@ opacity: 0.60;
 
   font-family:
   "Cormorant Garamond",
-  
+
     serif;
 
   font-weight: 700;
@@ -3250,4 +3251,116 @@ body .premium-card .thank-you-section p {
     text-shadow:
         0 0 4px rgba(255, 225, 160, 0.6),
         0 0 10px rgba(230, 180, 75, 0.4);
+}
+/* ===== TĂNG ĐỘ RÕ CHO LỜI CẢM ƠN ===== */
+
+body .premium-card .thank-you-section {
+    background: rgba(255, 248, 235, 0.82) !important;
+    border-radius: 12px;
+    padding: 12px 16px;
+}
+
+body .premium-card .thank-you-section p {
+    color: #382719 !important;
+    font-family: Arial, Tahoma, sans-serif !important;
+    font-weight: 400 !important;
+    text-shadow: none !important;
+    line-height: 1.8 !important;
+}
+
+/* ===== LỜI MỜI ===== */
+
+body .premium-card .premium-message {
+    color: #382719 !important;
+    font-weight: 400 !important;
+    text-shadow: none !important;
+}
+/* ===== LỜI MỜI ===== */
+
+body .premium-card .premium-message {
+    color: #3b2416 !important;
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif !important;
+    font-size: inherit !important;
+    font-weight: 400 !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.2px !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85) !important;
+}
+
+/* ===== ĐỊA CHỈ ===== */
+
+body .premium-card .premium-address,
+body .premium-card .address-text {
+    color: #3b2416 !important;
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif !important;
+    font-size: inherit !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.3px !important;
+    line-height: 1.6 !important;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9) !important;
+}
+/* ===== LÀM RÕ CHỮ LỜI MỜI ===== */
+
+body .premium-card .premium-message {
+    background: transparent !important;
+    color: #24170f !important;
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif !important;
+    font-size: inherit !important;
+    font-weight: 500 !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.2px !important;
+
+    text-shadow:
+        0 1px 2px rgba(255, 255, 255, 0.9),
+        0 0 4px rgba(255, 255, 255, 0.65) !important;
+}
+
+/* ===== PARKING INFORMATION ===== */
+
+body .premium-card .parking-section,
+body .premium-card .parking-section * {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+/* Tiêu đề thông tin gửi xe */
+body .premium-card .parking-section .parking-subtitle {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    letter-spacing: 1.5px !important;
+}
+
+/* Nội dung gửi xe */
+body .premium-card .parking-section p,
+body .premium-card .parking-section li {
+    font-size: 13px !important;
+}
+
+/* ===== LỜI CẢM ƠN ===== */
+
+body .premium-card .thank-you-section,
+body .premium-card .thank-you-section * {
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+/* Đoạn cảm ơn */
+body .premium-card .thank-you-section p {
+    font-weight: 400 !important;
+    color: #382719 !important;
+}
+
+/* Chữ ký */
+body .premium-card .thank-you-section .thank-you-signature {
+    font-family: "Times New Roman", Times, serif !important;
+    font-style: italic !important;
+}
+/* ===== TĂNG KÍCH THƯỚC SỐ ĐIỆN THOẠI ===== */
+
+body .premium-card .bottom-phone {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: 1.2px !important;
+}
+
+body .premium-card .bottom-phone span {
+    font-size: 14px !important;
 }

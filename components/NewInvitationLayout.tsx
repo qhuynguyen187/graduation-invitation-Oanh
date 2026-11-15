@@ -309,9 +309,7 @@ export default function NewInvitationLayout({
                             animate={{ opacity: 1 }}
                             transition={{ delay: 1.2 }}
                         >
-                            Oanh trân trọng kính mời Người thương đến chung vui
-                            trong ngày tốt nghiệp và cùng Oanh lưu giữ
-                            một khoảnh khắc thật đẹp, thật đáng nhớ.
+                            Oanh trân trọng kính mời "Người thương" đến chung vui trong ngày tốt nghiệp và cùng Oanh lưu giữ một khoảnh khắc thật đẹp, thật đáng nhớ.
                         </motion.p>
 
                         {/* EVENT INFORMATION */}
